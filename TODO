@@ -1,0 +1,59 @@
+# TODO
+
+## P1 - Critical fixes required before release
+
+- [ ] Fix CLI exit handling in `toolkit/main.go`
+  - Ensure `cmd.Execute()` errors are propagated and the process exits non-zero on failure.
+- [ ] Fix kubeconfig precedence in `toolkit/toolkit/k8s/client.go`
+  - Correct the current-directory fallback logic so it is checked on successful `os.Getwd()`, not on failure.
+- [ ] Add automated Go test execution to CI
+  - Run `go test` for maintained Go modules in PRs and merges.
+- [ ] Harden readiness condition validation in `toolkit/toolkit/k8s/verify.go`
+  - Validate unstructured values before assertions and avoid fragile condition-count logic.
+- [ ] Define explicit readiness semantics
+  - Document which status fields are required, supported, and how malformed objects should behave.
+
+## P2 - High-value reliability and DX improvements
+
+- [ ] Harden shell helper behavior in `scenarios/common.sh`
+  - Quote paths, guard `cd`, and fix state/reset issues.
+- [ ] Add local tests for `egw-scale-utils`
+  - Cover timeout handling, malformed replies, request behavior, metrics, and shutdown.
+- [ ] Make server lifecycle explicit
+  - Document bind address, shutdown path, and isolation guarantees for HTTP metrics/readiness servers.
+- [ ] Add a root-level quick start
+  - Include prerequisites, tool versions, one complete scenario, cleanup steps, and expected outputs.
+- [ ] Add contributor documentation
+  - Include setup instructions, validation commands, and maintenance expectations.
+- [ ] Define supported compatibility matrix
+  - Document supported Go, Kubernetes, container, and architecture versions.
+- [ ] Standardize benchmark scenario metadata
+  - Capture configuration, tool versions, test parameters, and machine-readable results.
+- [ ] Add scenario troubleshooting guidance
+  - Include prerequisites, resource limits, failure diagnosis, and cleanup guidance.
+- [ ] Review dependency and image security posture
+  - Add SBOM generation and dependency/image scans; review findings before version changes.
+
+## P3 - Maintenance and project hygiene
+
+- [ ] Clarify ownership boundaries for repo components
+  - Separate maintained tooling, examples, notebooks, and legacy content.
+- [ ] Fix stale branch references and example links
+  - Replace `master` references with the current default branch where appropriate.
+- [ ] Audit example and notebook licensing
+  - Confirm third-party content has compatible licensing and attribution where required.
+- [ ] Define vendoring and dependency-update policy
+  - Document when vendored dependencies are acceptable and how they are synchronized.
+- [ ] Publish a minimal release checklist
+  - Include validation, docs, image smoke tests, cleanup, and compatibility checks.
+
+## Validation checklist
+
+- [ ] `cd toolkit && go test ./...`
+- [ ] CLI success/failure behavior verified
+- [ ] Kubeconfig precedence tests pass
+- [ ] Readiness validation tests pass
+- [ ] Shell helper tests pass
+- [ ] Local integration tests for egress client/server pass
+- [ ] CI runs module tests for all maintained components
+- [ ] Documentation can be followed from a clean checkout without hidden steps
